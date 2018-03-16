@@ -1,0 +1,86 @@
+ # set wd
+ cd Documents/TRT/Git/
+ 
+  #########################
+  #make you log pretty
+  #########################
+ #git log --pretty=format:"%h - %an, %ar : %s, parent: %p"
+
+ 
+ 
+ 
+ #########################
+ git revert --no-commit 0766c053..HEAD
+git commit
+ #########################
+ 
+ #########################
+#Reverting Working Copy to Most Recent Commit
+#########################
+git reset --hard HEAD
+
+#########################
+#Reverting The Working Copy to an Older Commit
+#########################
+# Resets index to former commit; replace '56e05fced' with your commit code
+git reset 56e05fced 
+
+# Moves pointer back to previous HEAD
+git reset --soft HEAD@{1}
+
+git commit -m "Revert to 56e05fced"
+
+# Updates working copy to reflect the new commit
+git reset --hard
+ 
+ 
+ 
+######################### 
+ # This will detach your HEAD, that is, leave you with no branch checked out:
+#########################
+ git checkout 0d1d7fc32
+#########################
+#if you want to make commits while you're there, go ahead and make a new branch while you're at it:
+git checkout -b old-state 0d1d7fc32
+
+#########################
+#Hard delete unpublished commits
+#########################
+# This will destroy any local modifications.
+# Don't do it if you have uncommitted work you want to keep.
+git reset --hard 0d1d7fc32
+
+# Alternatively, if there's work to keep:
+git stash
+git reset --hard 0d1d7fc32
+git stash pop
+# This saves the modifications, then reapplies that patch after resetting.
+# You could get merge conflicts, if you've modified things which were
+# changed since the commit you reset to.
+
+#########################
+#Undo published commits with new commits
+#########################
+# This will create three separate revert commits:
+git revert a867b4af 25eee4ca 0766c053
+
+# It also takes ranges. This will revert the last two commits:
+git revert HEAD~2..HEAD
+
+#Similarly, you can revert a range of commits using commit hashes:
+git revert a867b4af..0766c053 
+
+# Reverting a merge commit
+git revert -m 1 <merge_commit_sha>
+
+# To get just one, you could use `rebase -i` to squash them afterwards
+# Or, you could do it manually (be sure to do this at top level of the repo)
+# get your index and work tree into the desired state, without changing HEAD:
+git checkout 0d1d7fc32 .
+
+# Then commit. Be sure and write a good message describing what you just did
+git commit
+
+
+
+
